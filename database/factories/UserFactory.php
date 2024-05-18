@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -40,5 +41,15 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    public function withRole($roleName)
+    {
+        return $this->state(function (array $attributes) use ($roleName) {
+            $role = Role::where('name', $roleName)->first();
+            return [
+                'role_id' => $role ? $role->id : null,
+            ];
+        });
     }
 }
