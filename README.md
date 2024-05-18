@@ -137,3 +137,9 @@ php artisan test
 ### Kesimpulan
 
 Dengan mengikuti langkah-langkah di atas, Anda seharusnya dapat menjalankan proyek Laravel Anda dengan lancar. Proses ini mencakup semua langkah utama mulai dari kloning repository hingga menjalankan server Laravel dan menggunakan alat pengembangan tambahan untuk pengalaman yang lebih baik. Pastikan untuk membaca dokumentasi resmi Laravel untuk informasi lebih lanjut dan praktik terbaik.
+
+### Entity Relationship Diagram (ERD)
+
+![ERD Diagram](/public/assets/erd.png)
+
+This is the Entity Relationship Diagram (ERD) for my Laravel project.
