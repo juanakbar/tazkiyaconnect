@@ -20,6 +20,7 @@
     <script defer src="{{ asset('assets/js/popper.min.js') }}"></script>
     <script defer src="{{ asset('assets/js/tippy-bundle.umd.min.js') }}"></script>
     <script defer src="{{ asset('assets/js/sweetalert.min.js') }}"></script>
+    @stack('CSS')
     <!-- Scripts -->
     @vite(['resources/css/app.css'])
 </head>
@@ -70,7 +71,7 @@
         @include('layouts.sidebar')
         <!-- start header section -->
         <div class="main-content flex min-h-screen flex-col">
-            @include('layouts.header')
+            @include('layouts.header', ['notif' => $notif])
             <div class="animate__animated p-6" :class="[$store.app.animation]">
                 <!-- start main content section -->
                 {{ $slot }}
@@ -109,6 +110,7 @@
                     document.documentElement.scrollTop = 0;
                 },
             }));
+
         });
     </script>
 </body>

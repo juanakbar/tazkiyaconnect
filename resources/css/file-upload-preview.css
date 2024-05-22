@@ -7,8 +7,8 @@
     box-sizing: border-box;
 }
 .custom-file-container .label-container label {
-    color: #4361ee;
-    font-size: 16px;
+    color: #000000;
+    font-size: 14px;
 }
 .custom-file-container .label-container {
     align-items: center;
@@ -99,7 +99,9 @@
     height: 180px;
     margin: 1.858736059%;
     position: relative;
-    transition: background 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    transition:
+        background 0.2s ease-in-out,
+        opacity 0.2s ease-in-out;
     width: 29.615861214%;
 }
 .custom-file-container .image-preview-item.multi-item-clear-animation {
@@ -114,7 +116,9 @@
     margin-top: -6px;
     position: absolute;
     text-align: center;
-    transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+    transition:
+        background 0.2s ease-in-out,
+        color 0.2s ease-in-out;
     width: 20px;
 }
 .custom-file-container .image-preview-item-clear:hover {

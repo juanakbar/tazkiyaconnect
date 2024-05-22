@@ -1,4 +1,5 @@
-<x-guest-layout>
+<x-guest-layout :title=$title>
+
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <div>
         <div class="absolute inset-0">

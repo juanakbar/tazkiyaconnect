@@ -70,7 +70,7 @@
                                              fill="currentColor" />
                                      </svg>
                                      <span
-                                         class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Siswa</span>
+                                         class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Master</span>
                                  </div>
                                  <div class="rtl:rotate-180" :class="{ '!rotate-90': activeDropdown === 'siswa' }">
                                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -82,7 +82,7 @@
                              </button>
                              <ul x-cloak x-show="activeDropdown === 'siswa'" x-collapse class="sub-menu text-gray-500">
                                  <li>
-                                     <a href="siswa-profile.html">Profile</a>
+                                     <a href="{{ route('walimurid.index') }}">Wali Murid</a>
                                  </li>
                                  <li>
                                      <a href="siswa-account-settings.html">Account Settings</a>

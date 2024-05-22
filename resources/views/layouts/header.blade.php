@@ -270,27 +270,10 @@
 </header>
 @push('JS')
     <script>
+        const notif = <?php echo json_encode($notif); ?>;
         document.addEventListener("alpine:init", () => {
             Alpine.data("header", () => ({
-                notifications: [{
-                        id: 1,
-                        profile: 'user-profile.jpeg',
-                        message: '<strong class="text-sm mr-1">John Doe</strong>invite you to <strong>Prototyping</strong>',
-                        time: '45 min ago',
-                    },
-                    {
-                        id: 2,
-                        profile: 'profile-34.jpeg',
-                        message: '<strong class="text-sm mr-1">Adam Nolan</strong>mentioned you to <strong>UX Basics</strong>',
-                        time: '9h Ago',
-                    },
-                    {
-                        id: 3,
-                        profile: 'profile-16.jpeg',
-                        message: '<strong class="text-sm mr-1">Anna Morgan</strong>Upload a file',
-                        time: '9h Ago',
-                    }
-                ],
+                notifications: notif,
                 removeNotification(value) {
                     this.notifications = this.notifications.filter((d) => d.id !== value);
                 },
