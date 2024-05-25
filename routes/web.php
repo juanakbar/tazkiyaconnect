@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('dashboard');
+    return redirect('login');
 })->name('welcome');
 
 Route::prefix('administrator')->middleware(['auth', 'role:SuperAdmin'])->group(function () {

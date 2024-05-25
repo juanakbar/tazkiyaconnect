@@ -83,7 +83,7 @@
                     </div>
                     <div>
                        <div class="custom-file-container" data-upload-id="myFirstImage" name="avatar" id="avatar">
-                        <input type="file" hidden name="avatar" id="avatar">
+                        {{-- <input type="file" hidden name="avatar" id="avatar"> --}}
                        </div>
                     </div>
                     <div class="flex items-end justify-end">

@@ -61,7 +61,7 @@
             let day = date.getDate();
             let month = date.getMonth() + 1;
             let year = date.getFullYear();
-            let currentDate = `${year}-${month}-${day}`;
+            let currentDate = `${year}-0${month}-${day}`;
             document.addEventListener("DOMContentLoaded", function(e) {
                 // default
                 var els = document.querySelectorAll(".selectize");
