@@ -8,14 +8,13 @@ Route::get('/', function () {
     return redirect('dashboard');
 })->name('welcome');
 
-Route::middleware(['auth'])->group(function () {
+Route::prefix('administrator')->middleware(['auth', 'role:SuperAdmin'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
-    });
-    Route::group(['middleware' => ['role:SuperAdmin']], function () {
-        Route::resource('walimurid', WaliMuridController::class);
-    });
+    })->name('dashboard');
+    Route::resource('walimurid', WaliMuridController::class);
 });
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
