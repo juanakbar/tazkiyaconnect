@@ -12,7 +12,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     });
-    Route::resource('walimurid', WaliMuridController::class);
+    Route::group(['middleware' => ['role:SuperAdmin']], function () {
+        Route::resource('walimurid', WaliMuridController::class);
+    });
 });
 
 Route::middleware('auth')->group(function () {

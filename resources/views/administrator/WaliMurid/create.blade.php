@@ -15,8 +15,8 @@
             </div>
 
             <div class="p-5" x-data="form" >
-                <form class="space-y-5" action="{{ route('walimurid.store') }}" method="POST">
-                    @method('POST')
+                <form class="space-y-5" action="{{ route("walimurid.store") }}" method="POST">
+                    @method("POST")
                     @csrf
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
@@ -82,7 +82,9 @@
                             class="form-input" name="alamat" />
                     </div>
                     <div>
-                       <input type="file" class="custom-file-container" data-upload-id="myFirstImage" name="avatar" id="avatar">
+                       <div class="custom-file-container" data-upload-id="myFirstImage" name="avatar" id="avatar">
+                        <input type="file" hidden name="avatar" id="avatar">
+                       </div>
                     </div>
                     <div class="flex items-end justify-end">
                         <button type="submit" class="btn btn-primary !mt-6">Simpan</button>

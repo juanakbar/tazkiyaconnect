@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace("_", "-", app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8" />
@@ -16,13 +16,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
         rel="stylesheet" />
 
-    <script src="{{ asset('assets/js/perfect-scrollbar.min.js') }}"></script>
-    <script defer src="{{ asset('assets/js/popper.min.js') }}"></script>
-    <script defer src="{{ asset('assets/js/tippy-bundle.umd.min.js') }}"></script>
-    <script defer src="{{ asset('assets/js/sweetalert.min.js') }}"></script>
-    @stack('CSS')
+    <script src="{{ asset("assets/js/perfect-scrollbar.min.js") }}"></script>
+    <script defer src="{{ asset("assets/js/popper.min.js") }}"></script>
+    <script defer src="{{ asset("assets/js/tippy-bundle.umd.min.js") }}"></script>
+    <script defer src="{{ asset("assets/js/sweetalert.min.js") }}"></script>
+    @stack("CSS")
     <!-- Scripts -->
-    @vite(['resources/css/app.css'])
+    @vite(["resources/css/app.css"])
 </head>
 
 <body x-data="main" class="relative overflow-x-hidden font-Poppins text-sm font-normal antialiased"
@@ -68,27 +68,46 @@
     </div>
 
     <div class="main-container min-h-screen text-black dark:text-white-dark" :class="[$store.app.navbar]">
-        @include('layouts.sidebar')
+        @include("layouts.sidebar")
         <!-- start header section -->
         <div class="main-content flex min-h-screen flex-col">
-            @include('layouts.header', ['notif' => $notif])
+            @include("layouts.header", ["notif" => $notif])
             <div class="animate__animated p-6" :class="[$store.app.animation]">
                 <!-- start main content section -->
                 {{ $slot }}
             </div>
-            @include('layouts.footer')
+            @include("layouts.footer")
         </div>
     </div>
-    <script src="{{ asset('assets/js/alpine-collaspe.min.js') }}"></script>
-    <script src="{{ asset('assets/js/alpine-persist.min.js') }}"></script>
-    <script defer src="{{ asset('assets/js/alpine-ui.min.js') }}"></script>
-    <script defer src="{{ asset('assets/js/alpine-focus.min.js') }}"></script>
-    <script defer src="{{ asset('assets/js/alpine.min.js') }}"></script>
-    <script src="{{ asset('assets/js/custom.js') }}"></script>
-    <script defer src="{{ asset('assets/js/apexcharts.js') }}"></script>
-    @stack('JS')
+    <script src="{{ asset("assets/js/alpine-collaspe.min.js") }}"></script>
+    <script src="{{ asset("assets/js/alpine-persist.min.js") }}"></script>
+    <script defer src="{{ asset("assets/js/alpine-ui.min.js") }}"></script>
+    <script defer src="{{ asset("assets/js/alpine-focus.min.js") }}"></script>
+    <script defer src="{{ asset("assets/js/alpine.min.js") }}"></script>
+    <script src="{{ asset("assets/js/custom.js") }}"></script>
+    <script defer src="{{ asset("assets/js/apexcharts.js") }}"></script>
+    @stack("JS")
     <script>
         document.addEventListener("alpine:init", () => {
+            Alpine.data('sidebar', () => ({
+                init() {
+                    const selector = document.querySelector('.sidebar ul a[href="' +
+                        {!! request()->route() !!} + '"]');
+                    if (selector) {
+                        selector.classList.add('active');
+                        const ul = selector.closest('ul.sub-menu');
+                        if (ul) {
+                            let ele = ul.closest('li.menu').querySelectorAll('.nav-link');
+                            if (ele) {
+                                ele = ele[0];
+                                setTimeout(() => {
+                                    ele.click();
+                                });
+                            }
+                        }
+                    }
+                },
+            }));
             Alpine.data("scrollToTop", () => ({
                 showTopButton: false,
                 init() {
