@@ -88,6 +88,9 @@
                         <li>
                             <a href="/administrator/walimurid">Wali Murid</a>
                         </li>
+                        <li>
+                            <a href="/administrator/walikelas">Wali Kelas</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -100,15 +103,8 @@
             Alpine.data('sidebar', () => ({
                 init() {
                     const currentRoute = {!! json_encode(request()->route()->uri()) !!};
-                    console.log('Current Route:', currentRoute); // Debugging line
-
-                    // Ensure leading slash and no trailing slash
                     const formattedRoute = '/' + currentRoute.replace(/^\/|\/$/g, '');
-                    console.log('Formatted Route:', formattedRoute); // Debugging line
-
                     const selector = document.querySelector(`.sidebar ul a[href="${formattedRoute}"]`);
-                    console.log('Selector:', selector); // Debugging line
-
                     if (selector) {
                         selector.classList.add('active');
                         const ul = selector.closest('ul.sub-menu');

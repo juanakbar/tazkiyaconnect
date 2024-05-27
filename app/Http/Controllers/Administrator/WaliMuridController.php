@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\WaliMuridResource;
 
 class WaliMuridController extends Controller
@@ -34,16 +35,7 @@ class WaliMuridController extends Controller
      */
     public function create()
     {
-        $provinces = Province::get();
-        $cities = City::get();
-        $districs = District::get();
-        $villages = Village::get();
-        return view('administrator.WaliMurid.create', [
-            'provinces' => $provinces,
-            'cities' => $cities,
-            'districs' => $districs,
-            'villages' => $villages
-        ]);
+        return view('administrator.WaliMurid.create');
     }
 
     /**
@@ -60,12 +52,7 @@ class WaliMuridController extends Controller
             'tanggal_lahir' => ['required', 'date'],
             'pendidikan' => ['required', 'string'],
             'pekerjaan' => ['required', 'string'],
-            'pendapatan' => ['nullable', 'string'],
             'kewarganeraan' => ['required', 'string'],
-            'province_code' => ['required', 'integer'],
-            'city_code' => ['required', 'integer'],
-            'district_code' => ['required', 'integer'],
-            'village_code' => ['required', 'integer'],
             'alamat' => ['required', 'string'],
             'avatar' => ['required', 'mimes:jpeg,jpg,png,gif'] // Ubah validasi menjadi 'image'
         ]);
@@ -73,10 +60,10 @@ class WaliMuridController extends Controller
         $user = User::create([
             'name' => $validateData['name'],
             'email' => $validateData['email'],
-            'password' => Hash::make(Str::slug($validateData['name'])),
+            'password' => Hash::make('password'),
         ]);
 
-        $waliMurid = WaliMurid::create([
+        WaliMurid::create([
             'user_id' => $user->id,
             'nik' => $validateData['nik'],
             'agama' => $validateData['agama'],
@@ -84,14 +71,11 @@ class WaliMuridController extends Controller
             'tanggal_lahir' => $validateData['tanggal_lahir'],
             'pendidikan' => $validateData['pendidikan'],
             'pekerjaan' => $validateData['pekerjaan'],
-            'pendapatan' => $validateData['pendapatan'],
             'kewarganeraan' => $validateData['kewarganeraan'],
-            'province_code' => $validateData['province_code'],
-            'city_code' => $validateData['city_code'],
-            'district_code' => $validateData['district_code'],
-            'village_code' => $validateData['village_code'],
-            'alamat' => $validateData['alamat'], 'avatar' => $request->file('avatar')->storeAs('avatar', $user->id . '_' . $request->file('avatar')->getClientOriginalName(), 'public')
+            'alamat' => $validateData['alamat'],
+            'avatar' => $request->file('avatar')->storeAs('avatar/walimurid', $user->id . '_' . $request->file('avatar')->getClientOriginalName(), 'public')
         ]);
+        $user->assignRole('WaliMurid');
 
         flash()->success('Wali Murid Berhasil Ditambahkan');
         return redirect()->route('walimurid.index');
@@ -102,9 +86,11 @@ class WaliMuridController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        //
+        $walimurid = WaliMurid::query()->with('user')->where('slug', $slug)->first();
+        // dd($walimurid->tanggal_lahir);
+        return view('administrator.WaliMurid.show', compact('walimurid'));
     }
 
     /**
@@ -118,16 +104,59 @@ class WaliMuridController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $slug)
     {
-        //
+        $walimurid = WaliMurid::query()->with('user')->where('slug', $slug)->first();
+        if ($request->has('email') || $request->has('name')) {
+            $user = User::where('id', $walimurid->user_id)->first();
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make(Str::slug($request->name)),
+            ]);
+        }
+        $walimurid->update([
+            'nik' => $request->nik,
+            'agama' => $request->agama,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'pendidikan' => $request->pendidikan,
+            'pekerjaan' => $request->pekerjaan,
+            'kewarganeraan' => $request->kewarganeraan,
+            'alamat' => $request->alamat,
+            // 'avatar' => $request->file('avatar')->storeAs('avatar', $user->id . '_' . $request->file('avatar')->getClientOriginalName(), 'public')
+        ]);
+        if ($request->has('avatar')) {
+            Storage::delete($walimurid->avatar);
+            $walimurid->avatar = $request->file('avatar')->storeAs('avatar/walimurid', $walimurid->id . '_' . $walimurid->slug, 'public');
+            $walimurid->save();
+        }
+        flash()->success('Wali Murid Berhasil Diubah');
+        return redirect()->route('walimurid.show', $walimurid->slug);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $slug)
     {
-        //
+        try {
+            // Cari data WaliKelas berdasarkan slug
+            $walimurid = WaliMurid::where('slug', $slug)->firstOrFail();
+            $user = User::where('id', $walimurid->user_id)->firstOrFail();
+            // Periksa apakah avatar ada dan hapus jika ada
+            if ($walimurid->avatar && Storage::exists($walimurid->avatar)) {
+                Storage::delete($walimurid->avatar);
+            }
+
+            // Hapus data WaliKelas dari database
+            $walimurid->delete();
+            $user->delete();
+            return response()->json(['success' => 'Item deleted successfully']);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Item not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'There was an error deleting the item'], 500);
+        }
     }
 }

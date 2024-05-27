@@ -9,19 +9,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Administrator\WaliKelasController;
 use App\Http\Controllers\Administrator\WaliMuridController;
 
 Route::get('/', function () {
     return redirect('login');
 })->name('welcome');
 
-Route::prefix('administrator')->middleware(['auth', 'role:SuperAdmin'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-    Route::resource('walimurid', WaliMuridController::class);
-});
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard')->middleware('auth');
 
+Route::prefix('administrator')->middleware(['auth', 'role:SuperAdmin'])->group(function () {
+    Route::resource('walimurid', WaliMuridController::class);
+    Route::resource('walikelas', WaliKelasController::class);
+});
+Route::prefix('walimurid')->middleware(['auth', 'role:WaliMurid'])->group(function () {
+    Route::get('/dasboard', function () {
+        return 'JUJUN SIGA KONTOL';
+    })->name('dashboard_wali_murid');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -34,20 +41,5 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 // API
 Route::prefix('api')->group(function () {
-    Route::get('province', function () {
-        return response()->json(Province::get(['code', 'name']));
-    })->name('province_api');
-    Route::get('cities/{province_code}', function (Request $request) {
-        return response()->json(City::where('province_code', $request->province_code)->get(['code', 'name']));
-    })->name('city_api');
-
-    Route::get('/districts/{cityCode}', function ($cityCode) {
-        $districts = District::where('city_code', $cityCode)->get();
-        return response()->json($districts);
-    });
-
-    Route::get('/villages/{districtCode}', function ($districtCode) {
-        $villages = Village::where('district_code', $districtCode)->get();
-        return response()->json($villages);
-    });
+    // 
 });

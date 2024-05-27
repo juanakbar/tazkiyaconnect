@@ -92,14 +92,6 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="pendapatan">Pendapatan Orang Tua</label>
-                        <input id="pendapatan" type="text" placeholder="Masukkan Pendapatan Orang Tua"
-                            class="form-input" name="pendapatan" />
-                        @error("pendapatan")
-                            <p class="text-danger mt-1">Mohon dicek Kembali</p>
-                        @enderror
-                    </div>
-                    <div>
                         <label for="kewarganeraan">Kewarganegaraan Orang Tua</label>
                         <input id="kewarganeraan" type="text" placeholder="Masukkan Kewarganegaraan Orang Tua"
                             class="form-input" name="kewarganeraan" />
@@ -108,49 +100,10 @@
                         @enderror
 
                     </div>
-                    <div>
-                        <label for="province_code">Provinsi</label>
-                        <select id="province_code" name="province_code" class="form-select placeholder:text-gray-300">
-                            <option value="" selected disabled>Pilih Provinsi Orang Tua...</option>
-                            @foreach ($provinces as $province)
-                                <option value="{{ $province->code }}">{{ $province->name }} </option>
-                            @endforeach
-                        </select>
-                        @error("province_code")
-                            <p class="text-danger mt-1">Mohon dicek Kembali</p>
-                        @enderror
-                    </div>
-                    <div id="city_code_container">
-                        <label for="city_code">Kota</label>
-                        <select id="city_code" name="city_code" class="form-select" placeholder="Pilih Kota">
-                            <option value="" selected disabled>Pilih Provinsi Orang Tua...</option>
-                        </select>
-                        @error("city_code")
-                            <p class="text-danger mt-1">Mohon dicek Kembali</p>
-                        @enderror
-                    </div>
-                    <div id="district_code_container">
-                        <label for="district_code">Kecamatan</label>
-                        <select id="district_code" name="district_code" class="form-select">
-                            <option value="" selected disabled>Pilih Kecamatan Orang Tua...</option>
-                        </select>
-                        @error("district_code")
-                            <p class="text-danger mt-1">Mohon dicek Kembali</p>
-                        @enderror
-                    </div>
-                    <div id="village_code_container">
-                        <label for="village_code">Desa</label>
-                        <select id="village_code" name="village_code" class="form-select">
-                            <option value="" selected disabled>Pilih Desa Orang Tua...</option>
-                        </select>
-                        @error("village_code")
-                            <p class="text-danger mt-1">Mohon dicek Kembali</p>
-                        @enderror
-                    </div>
                     <div class="col-span-full">
                         <label for="alamat">Alamat Orang Tua</label>
-                        <input id="alamat" type="text" placeholder="Masukkan Alamat Orang Tua"
-                            class="form-input" name="alamat" />
+                        <input id="alamat" type="text" placeholder="Masukkan Alamat Orang Tua" class="form-input"
+                            name="alamat" />
                         @error("alamat")
                             <p class="text-danger mt-1">Mohon dicek Kembali</p>
                         @enderror
@@ -201,107 +154,6 @@
                     URL.revokeObjectURL(output.src) // free memory
                 }
             };
-            let selectedProvince;
-            let selectedCity;
-            let selectedDistrict;
-            document.addEventListener("DOMContentLoaded", function(e) {
-
-                const provinceSelect = document.getElementById('province_code');
-                const agamaSelect = document.getElementById('agama');
-                const citySelect = document.getElementById('city_code');
-                const districtSelect = document.getElementById('district_code');
-                const villageSelect = document.getElementById('village_code');
-
-
-                provinceSelect.addEventListener('change', function() {
-                    const selectedProvince = this.value;
-                    fetch(`/api/cities/${selectedProvince}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            citySelect.innerHTML = '';
-                            citySelect.innerHTML =
-                                ' <option value="" selected disabled>Pilih Provinsi Orang Tua...</option>'
-                            // Tambahkan opsi baru dari data yang diterima
-                            data.forEach(item => {
-                                const option = document.createElement('option');
-                                option.value = item.code;
-                                option.textContent = item.name;
-                                citySelect.appendChild(option);
-                            });
-                        })
-                        .catch(error => {
-                            console.error('Error fetching data:', error);
-
-                            // Hapus opsi lama sebelum menambahkan yang baru
-                            citySelect.innerHTML = '';
-
-                            // Tambahkan opsi kesalahan
-                            const errorOption = document.createElement('option');
-                            errorOption.value = '';
-                            errorOption.textContent = 'Error loading data';
-                            citySelect.appendChild(errorOption);
-                        });
-                });
-                citySelect.addEventListener('change', function() {
-                    selectedCity = event.target.value
-                    fetch(`/api/districts/${selectedCity}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            districtSelect.innerHTML = '';
-                            districtSelect.innerHTML =
-                                '<option value="" selected disabled>Pilih Kecamatan Orang Tua...</option>'
-                            // Tambahkan opsi baru dari data yang diterima
-                            data.forEach(item => {
-                                const option = document.createElement('option');
-                                option.value = item.code;
-                                option.textContent = item.name;
-                                districtSelect.appendChild(option);
-                            });
-                        })
-                        .catch(error => {
-                            console.error('Error fetching data:', error);
-
-                            // Hapus opsi lama sebelum menambahkan yang baru
-                            districtSelect.innerHTML = '';
-
-                            // Tambahkan opsi kesalahan
-                            const errorOption = document.createElement('option');
-                            errorOption.value = '';
-                            errorOption.textContent = 'Error loading data';
-                            districtSelect.appendChild(errorOption);
-                        });
-                });
-                districtSelect.addEventListener('change', function() {
-                    selectedDistrict = event.target.value
-                    fetch(`/api/villages/${selectedDistrict}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            villageSelect.innerHTML = '';
-                            villageSelect.innerHTML =
-                                '<option value="" selected disabled>Pilih Kecamatan Orang Tua...</option>'
-                            // Tambahkan opsi baru dari data yang diterima
-                            data.forEach(item => {
-                                const option = document.createElement('option');
-                                option.value = item.code;
-                                option.textContent = item.name;
-                                villageSelect.appendChild(option);
-                            });
-                        })
-                        .catch(error => {
-                            console.error('Error fetching data:', error);
-
-                            // Hapus opsi lama sebelum menambahkan yang baru
-                            villageSelect.innerHTML = '';
-
-                            // Tambahkan opsi kesalahan
-                            const errorOption = document.createElement('option');
-                            errorOption.value = '';
-                            errorOption.textContent = 'Error loading data';
-                            villageSelect.appendChild(errorOption);
-                        });
-                });
-
-            })
         </script>
         <script>
             const date = new Date();

@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(WaliMurid::class, 'user_id', 'id');
     }
+    // User to waliKelas
+    public function waliKelas(): HasOne
+    {
+        return $this->hasOne(waliKelas::class, 'user_id', 'id');
+    }
 }

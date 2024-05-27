@@ -38,10 +38,6 @@ class DatabaseSeeder extends Seeder
         $WalMur->assignRole('WaliMurid');
         $WaliKelas->assignRole('WaliKelas');
         $this->call([
-            ProvinceSeeder::class,
-            CitySeeder::class,
-            DistrictSeeder::class,
-            VillageSeeder::class,
             WaliMuridSeeder::class
         ]);
     }
