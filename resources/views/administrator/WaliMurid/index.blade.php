@@ -34,7 +34,7 @@
                 </button>
             </div>
         </div>
-        <div x-data='striped' class="sticky-header">
+        <div x-data='striped'>
             {{-- {{ $dataTable->table() }} --}}
             <table id="walMurTable" class="table-striped table-hover table-bordered table-compact">
                 <thead>

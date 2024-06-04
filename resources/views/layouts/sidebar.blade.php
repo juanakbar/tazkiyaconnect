@@ -91,6 +91,9 @@
                         <li>
                             <a href="/administrator/walikelas">Wali Kelas</a>
                         </li>
+                        <li>
+                            <a href="/administrator/kelas">Kelas</a>
+                        </li>
                     </ul>
                 </li>
             </ul>

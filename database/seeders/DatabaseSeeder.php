@@ -37,8 +37,8 @@ class DatabaseSeeder extends Seeder
         $Admin->assignRole('SuperAdmin');
         $WalMur->assignRole('WaliMurid');
         $WaliKelas->assignRole('WaliKelas');
-        $this->call([
-            WaliMuridSeeder::class
-        ]);
+        // $this->call([
+        //     WaliMuridSeeder::class
+        // ]);
     }
 }
