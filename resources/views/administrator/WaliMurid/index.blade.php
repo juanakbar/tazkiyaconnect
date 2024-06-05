@@ -159,13 +159,7 @@
             let month = date.getMonth() + 1;
             let year = date.getFullYear();
             let currentDate = `${year}-0${month}-${day}`;
-            document.addEventListener("DOMContentLoaded", function(e) {
-                // default
-                var els = document.querySelectorAll(".selectize");
-                els.forEach(function(select) {
-                    NiceSelect.bind(select);
-                });
-            });
+            
 
             document.addEventListener('alpine:init', () => {
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Models\Kelas;
+use App\Models\WaliKelas;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -35,9 +36,9 @@ class KelasController extends Controller
     public function edit(string $slug)
     {
         $item = Kelas::where('slug', $slug)->first();
-
+        $waliKelas = WaliKelas::all();
         return view('administrator.kelas.update', [
-            'item' => $item
+            'item' => $item, 'waliKelas' => $waliKelas
         ]);
     }
 
@@ -68,8 +69,24 @@ class KelasController extends Controller
             return response()->json(['error' => 'There was an error deleting the item'], 500);
         }
     }
-    public function assignWaliKelas(Kelas $kelas)
+    public function assignWaliKelas(string $slug)
     {
-        dd($kelas);
+        $waliKelas = WaliKelas::all();
+        // dd($waliKelas);
+        $kelas = Kelas::where('slug', $slug)->first();
+        return view('administrator.kelas.assignWaliKelas', [
+            'waliKelas' => $waliKelas, 'kelas' => $kelas
+        ]);
+    }
+
+    public function assignWaliKelasPost(string $slug, Request $request)
+    {
+        $kelas = Kelas::where('slug', $slug)->first();
+        $waliKelas = WaliKelas::where('id', $request->wali_kelas_id)->first();
+        $kelas->update([
+            'wali_kelas_id' => $waliKelas->id
+        ]);
+        flash()->addSuccess('Wali Kelas Berhasil Ditambahkan');
+        return redirect()->route('kelas.index');
     }
 }

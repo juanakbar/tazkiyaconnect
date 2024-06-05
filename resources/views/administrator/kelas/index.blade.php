@@ -30,7 +30,7 @@
                             <th>Wali Kelas</th>
                             {{-- TODO: Ketua Kelas Assign --}}
                             {{-- <th>Ketua Kelas</th> --}}
-                            <th>Action</th>
+                            <th class="text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,19 +38,23 @@
                             <tr>
                                 <td>{{ $item->grade }}</td>
                                 <td>{{ $item->level }}</td>
-                                <td>
+                                <td class="hover:underline hover:text-primary">
                                     @if ($item->waliKelas)
-                                        {{ $item->waliKelas->user->name }}
+                                        <a href="{{ route("assign_wali_kelas", $item->slug) }}"
+                                            class="flex items-center gap-2" x-tooltip="Klik Untuk Ubah Wali Kelas">
+                                            <img src="{{ asset("storage/" . $item->waliKelas->avatar) }}"
+                                                class="w-9 h-9 rounded-full max-w-none" alt="user-profile" />
+                                            <div class="font-reguler  block ">
+                                                {{ $item->waliKelas->user->name }}</div>
+                                        </a>
                                     @else
-                                        <div x-data="modal">
-                                            <button type="button" @click="toggle"
-                                                class="text-primary block hover:underline">Pilih Wali Kelas</button>
-                                            @include("administrator.kelas.assignWaliKelas")
-                                        </div>
+                                        <a href="{{ route("assign_wali_kelas", $item->slug) }}"
+                                            class="text-primary block hover:underline">Pilih Wali
+                                            Kelas</a>
                                     @endif
 
                                 </td>
-                                <td class="border-b border-[#ebedf2] p-3 text-center">
+                                <td class="border-b border-[#ebedf2] p-3 text-end">
                                     <button type="button" x-tooltip="Delete">
 
                                         <a href="{{ route("kelas.edit", $item->slug) }}" x-tooltip="Detail">
@@ -95,56 +99,9 @@
     </div>
     @push("JS")
         <script src="{{ asset("assets/js/simple-datatables.js") }}"></script>
+        <script></script>
         <script>
-            async function showAlert(slug) {
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                new window.Swal({
-                    icon: 'warning',
-                    title: 'Apakah Kamu Yakin?',
-                    text: "Hal Ini Tidak Bisa Di Kembalikan!",
-                    showCancelButton: true,
-                    confirmButtonText: 'Delete',
-                    padding: '2em',
-                }).then(async (result) => {
-                    if (result.value) {
-                        try {
-                            const response = await fetch(`{{ route("kelas.destroy", ":slug") }}`.replace(
-                                ':slug', slug), {
-                                method: 'DELETE',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': csrfToken // Pastikan CSRF token disertakan
-                                }
-                            });
-
-                            if (response.ok) {
-                                new window.Swal('Berhasil!', 'Data Wali Kelas Berhasil di Hapus.',
-                                    'success');
-                                setTimeout(() => {
-                                    location
-                                        .reload(); // Reload page after deletion                                    
-                                }, 1000);
-                                // Optional: Refresh the page or remove the item from the DOM
-                            } else {
-                                console.log(response);
-                                new window.Swal('Error!', 'Data Wali KelaasGagal Dihapus', 'error');
-                            }
-                        } catch (error) {
-                            new window.Swal('Error!', error.message, 'error');
-                        }
-                    }
-                });
-            }
-        </script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function(e) {
-                // default
-                var els = document.querySelectorAll(".selectize");
-                els.forEach(function(select) {
-                    NiceSelect.bind(select);
-                });
-            });
-
+            let datatable5;
             document.addEventListener('alpine:init', () => {
 
 
@@ -170,10 +127,53 @@
                             },
                         };
 
-                        const datatable5 = new simpleDatatables.DataTable('#kelasTable', tableOptions);
+                        datatable5 = new simpleDatatables.DataTable('#kelasTable', tableOptions);
                     },
                 }));
+
+
             });
+            async function showAlert(slug) {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                new window.Swal({
+                    icon: 'warning',
+                    title: 'Apakah Kamu Yakin?',
+                    text: "Hal Ini Tidak Bisa Di Kembalikan!",
+                    showCancelButton: true,
+                    confirmButtonText: 'Delete',
+                    padding: '2em',
+                }).then(async (result) => {
+                    if (result.value) {
+                        try {
+                            const response = await fetch(`{{ route("kelas.destroy", ":slug") }}`
+                                .replace(
+                                    ':slug', slug), {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': csrfToken // Pastikan CSRF token disertakan
+                                    }
+                                });
+
+                            if (response.ok) {
+                                new window.Swal('Berhasil!', 'Data Wali Kelas Berhasil di Hapus.',
+                                    'success');
+                                setTimeout(() => {
+                                    location
+                                        .reload(); // Reload page after deletion                                    
+                                }, 1000);
+
+                                // Optional: Refresh the page or remove the item from the DOM
+                            } else {
+                                console.log(response);
+                                new window.Swal('Error!', 'Data Wali KelaasGagal Dihapus', 'error');
+                            }
+                        } catch (error) {
+                            new window.Swal('Error!', error.message, 'error');
+                        }
+                    }
+                });
+            }
         </script>
     @endpush
 </x-app-layout>
