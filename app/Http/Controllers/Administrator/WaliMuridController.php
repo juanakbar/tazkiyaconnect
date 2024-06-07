@@ -61,6 +61,8 @@ class WaliMuridController extends Controller
             'name' => $validateData['name'],
             'email' => $validateData['email'],
             'password' => Hash::make('password'),
+            'avatar' => $request->file('avatar')->storeAs('avatar/users', Uuid::uuid4() . '_' . $request->file('avatar')->getClientOriginalName(), 'public')
+
         ]);
 
         WaliMurid::create([
@@ -73,7 +75,6 @@ class WaliMuridController extends Controller
             'pekerjaan' => $validateData['pekerjaan'],
             'kewarganeraan' => $validateData['kewarganeraan'],
             'alamat' => $validateData['alamat'],
-            'avatar' => $request->file('avatar')->storeAs('avatar/walimurid', $user->id . '_' . $request->file('avatar')->getClientOriginalName(), 'public')
         ]);
         $user->assignRole('WaliMurid');
 
@@ -127,9 +128,9 @@ class WaliMuridController extends Controller
             // 'avatar' => $request->file('avatar')->storeAs('avatar', $user->id . '_' . $request->file('avatar')->getClientOriginalName(), 'public')
         ]);
         if ($request->has('avatar')) {
-            Storage::delete($walimurid->avatar);
-            $walimurid->avatar = $request->file('avatar')->storeAs('avatar/walimurid', $walimurid->id . '_' . $walimurid->slug, 'public');
-            $walimurid->save();
+            Storage::delete($user->avatar);
+            $user->avatar = $request->file('avatar')->storeAs('avatar/user', $user->id . '_' . $user->slug, 'public');
+            $user->save();
         }
         flash()->success('Wali Murid Berhasil Diubah');
         return redirect()->route('walimurid.show', $walimurid->slug);
@@ -145,8 +146,8 @@ class WaliMuridController extends Controller
             $walimurid = WaliMurid::where('slug', $slug)->firstOrFail();
             $user = User::where('id', $walimurid->user_id)->firstOrFail();
             // Periksa apakah avatar ada dan hapus jika ada
-            if ($walimurid->avatar && Storage::exists($walimurid->avatar)) {
-                Storage::delete($walimurid->avatar);
+            if ($user->avatar && Storage::exists($user->avatar)) {
+                Storage::delete($user->avatar);
             }
 
             // Hapus data WaliKelas dari database

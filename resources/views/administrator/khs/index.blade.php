@@ -1,11 +1,10 @@
 <x-app-layout>
     <div>
-        {{-- @include("administrator.kelas.create") --}}
         <div class="panel">
-            <h5 class="text-lg font-semibold dark:text-white-light">Kelas</h5>
+            <h5 class="text-lg font-semibold dark:text-white-light">Kegiatan Harian Siswa</h5>
             <div class="md:absolute  ltr:md:left-5 rtl:md:right-5">
-                <div class="mb-5 flex flex-wrap items-center">
-                    <a href="{{ route("kelas.create") }}" type="button" class="btn btn-primary btn-sm m-1">
+                <div class="mb-5 flex flex-wrap items-center" x-data="modal">
+                    <button @click="toggle" type="button" class="btn btn-primary btn-sm m-1">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ltr:mr-2 rtl:ml-2">
                             <path
@@ -15,9 +14,9 @@
                                 d="M13 2.5V5C13 7.35702 13 8.53553 13.7322 9.26777C14.4645 10 15.643 10 18 10H22"
                                 stroke="currentColor" stroke-width="1.5" />
                         </svg>
-                        Tambah
-                    </a>
-
+                        Tambah KHS
+                    </button>
+                    @include("administrator.khs.create")
                 </div>
             </div>
             <div x-data='striped'>
@@ -25,52 +24,21 @@
                 <table id="kelasTable" class="table-striped table-hover table-bordered table-compact">
                     <thead>
                         <tr>
+                            <th>Kegiatan</th>
+                            <th>Nilai</th>
                             <th>Kelas</th>
-                            <th>Level</th>
-                            <th>Wali Kelas</th>
-                            {{-- TODO: Ketua Kelas Assign --}}
-                            {{-- <th>Ketua Kelas</th> --}}
-                            <th>KHS</th>
                             <th class="text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($kelas as $item)
+                        @foreach ($khs as $item)
                             <tr>
-                                <td>{{ $item->grade }}</td>
-                                <td>{{ $item->level }}</td>
-                                <td class="hover:underline hover:text-primary">
-                                    @if ($item->waliKelas)
-                                        <a href="{{ route("assign_wali_kelas", $item->slug) }}"
-                                            class="flex items-center gap-2" x-tooltip="Klik Untuk Ubah Wali Kelas">
-                                            <img src="{{ asset("storage/" . $item->waliKelas->avatar) }}"
-                                                class="w-9 h-9 rounded-full max-w-none" alt="user-profile" />
-                                            <div class="font-reguler  block ">
-                                                {{ $item->waliKelas->user->name }}</div>
-                                        </a>
-                                    @else
-                                        <a href="{{ route("assign_wali_kelas", $item->slug) }}"
-                                            class="text-primary block hover:underline">Pilih Wali
-                                            Kelas</a>
-                                    @endif
-
-                                </td>
-                                <td class="hover:underline hover:text-primary">
-                                    @if ($item->tasks->count() > 0)
-                                        <a href="{{ route("khs.show", $item->id) }}" class="flex items-center gap-2"
-                                            x-tooltip="Klik Untuk Melihat KHS Kelas">
-                                            Lihat KHS
-                                        </a>
-                                    @else
-                                        <a href="{{ route("khs.show", $item->id) }}"
-                                            class="text-primary block hover:underline">Buat KHS</a>
-                                    @endif
-
-                                </td>
-                                <td class="border-b border-[#ebedf2] p-3 text-end">
-                                    <button type="button" x-tooltip="Delete">
-
-                                        <a href="{{ route("kelas.edit", $item->slug) }}" x-tooltip="Detail">
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->nilai }}</td>
+                                <td>{{ $item->kelas->grade }} - Level {{ $item->kelas->level }}</td>
+                                <td class="border-b border-[#ebedf2] p-3  flex items-end justify-end">
+                                    <div x-data="update">
+                                        <button @click="toggle" x-tooltip="Detail">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 class="h-4.5 w-4.5 ltr:mr-2 rtl:ml-2">
@@ -81,27 +49,30 @@
                                                     d="M14.36 4.07812C14.36 4.07812 14.4759 6.04774 16.2138 7.78564C17.9517 9.52354 19.9213 9.6394 19.9213 9.6394M4.19789 21.6777L2.32178 19.8015"
                                                     stroke="currentColor" stroke-width="1.5" />
                                             </svg>
-                                        </a>
-                                    </button>
+                                        </button>
+                                        @include("administrator.khs.update")
+                                    </div>
 
-                                    <button type="button" x-tooltip="Delete"
-                                        @click="showAlert('{{ $item->slug }}')">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg" class="h-5 w-5">
-                                            <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5"
-                                                stroke-linecap="round" />
-                                            <path
-                                                d="M18.8334 8.5L18.3735 15.3991C18.1965 18.054 18.108 19.3815 17.243 20.1907C16.378 21 15.0476 21 12.3868 21H11.6134C8.9526 21 7.6222 21 6.75719 20.1907C5.89218 19.3815 5.80368 18.054 5.62669 15.3991L5.16675 8.5"
-                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                            <path opacity="0.5" d="M9.5 11L10 16" stroke="currentColor"
-                                                stroke-width="1.5" stroke-linecap="round" />
-                                            <path opacity="0.5" d="M14.5 11L14 16" stroke="currentColor"
-                                                stroke-width="1.5" stroke-linecap="round" />
-                                            <path opacity="0.5"
-                                                d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6"
-                                                stroke="currentColor" stroke-width="1.5" />
-                                        </svg>
-                                    </button>
+                                    <div>
+                                        <button type="button" x-tooltip="Delete"
+                                            @click="showAlert('{{ $item->id }}')">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg" class="h-5 w-5">
+                                                <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5"
+                                                    stroke-linecap="round" />
+                                                <path
+                                                    d="M18.8334 8.5L18.3735 15.3991C18.1965 18.054 18.108 19.3815 17.243 20.1907C16.378 21 15.0476 21 12.3868 21H11.6134C8.9526 21 7.6222 21 6.75719 20.1907C5.89218 19.3815 5.80368 18.054 5.62669 15.3991L5.16675 8.5"
+                                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                                <path opacity="0.5" d="M9.5 11L10 16" stroke="currentColor"
+                                                    stroke-width="1.5" stroke-linecap="round" />
+                                                <path opacity="0.5" d="M14.5 11L14 16" stroke="currentColor"
+                                                    stroke-width="1.5" stroke-linecap="round" />
+                                                <path opacity="0.5"
+                                                    d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6"
+                                                    stroke="currentColor" stroke-width="1.5" />
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -111,14 +82,35 @@
             </div>
         </div>
     </div>
+    @push("CSS")
+        <link rel='stylesheet' type='text/css' href='{{ Vite::asset("resources/css/nice-select2.css") }}'>
+    @endpush
     @push("JS")
+        <script src="/assets/js/nice-select2.js"></script>
         <script src="{{ asset("assets/js/simple-datatables.js") }}"></script>
-
+        <script>
+            document.addEventListener("DOMContentLoaded", function(e) {
+                // seachable 
+                var options = {
+                    searchable: true,
+                    placeholder: 'Pilih Kelas'
+                };
+                NiceSelect.bind(document.getElementById("kelas_id"), options);
+                NiceSelect.bind(document.getElementById("kelas_id_update"), options);
+            });
+        </script>
         <script>
             let datatable5;
             document.addEventListener('alpine:init', () => {
 
+                Alpine.data("update", (initialOpenState = false) => ({
+                    open: initialOpenState,
 
+                    toggle() {
+                        this.open = !this.open;
+                    },
+
+                }));
                 Alpine.data('striped', () => ({
                     init() {
                         const tableOptions = {
@@ -141,14 +133,16 @@
                             },
                         };
 
-                        datatable5 = new simpleDatatables.DataTable('#kelasTable', tableOptions);
+                        datatable5 = new simpleDatatables.DataTable('#kelasTable',
+                            tableOptions);
                     },
                 }));
 
 
             });
-            async function showAlert(slug) {
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            async function showAlert(id) {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
+                    'content');
                 new window.Swal({
                     icon: 'warning',
                     title: 'Apakah Kamu Yakin?',
@@ -159,9 +153,10 @@
                 }).then(async (result) => {
                     if (result.value) {
                         try {
-                            const response = await fetch(`{{ route("kelas.destroy", ":slug") }}`
+                            const response = await fetch(
+                                `{{ route("khs.destroy", ":id") }}`
                                 .replace(
-                                    ':slug', slug), {
+                                    ':id', id), {
                                     method: 'DELETE',
                                     headers: {
                                         'Content-Type': 'application/json',
@@ -170,7 +165,8 @@
                                 });
 
                             if (response.ok) {
-                                new window.Swal('Berhasil!', 'Data Wali Kelas Berhasil di Hapus.',
+                                new window.Swal('Berhasil!',
+                                    'Data Kegiatan Berhasil di Hapus.',
                                     'success');
                                 setTimeout(() => {
                                     location
@@ -180,7 +176,8 @@
                                 // Optional: Refresh the page or remove the item from the DOM
                             } else {
                                 console.log(response);
-                                new window.Swal('Error!', 'Data Wali KelaasGagal Dihapus', 'error');
+                                new window.Swal('Error!', 'Data Kegiatan Gagal Dihapus',
+                                    'error');
                             }
                         } catch (error) {
                             new window.Swal('Error!', error.message, 'error');

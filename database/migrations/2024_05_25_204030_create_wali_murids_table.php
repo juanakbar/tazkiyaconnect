@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('pekerjaan');
             $table->string('kewarganeraan');
             $table->text('alamat');
-            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }

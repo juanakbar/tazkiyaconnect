@@ -53,7 +53,7 @@
                         <tr>
                             <td>
                                 <div class="flex items-center gap-2">
-                                    <img src="{{ asset("storage/" . $walimurid->avatar) }}"
+                                    <img src="{{ asset("storage/" . $walimurid->user->avatar) }}"
                                         class="w-9 h-9 rounded-full max-w-none" alt="user-profile" />
                                     <div class="font-semibold">{{ $walimurid->user->name }}</div>
                                 </div>
@@ -159,7 +159,7 @@
             let month = date.getMonth() + 1;
             let year = date.getFullYear();
             let currentDate = `${year}-0${month}-${day}`;
-            
+
 
             document.addEventListener('alpine:init', () => {
 

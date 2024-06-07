@@ -73,7 +73,8 @@
                         <div class="flex items-center space-x-6">
                             <div class="shrink-0">
                                 <img id='preview_img' class="h-16 w-16 object-cover rounded-full"
-                                    src="{{ asset("storage/" . $walikelas->avatar) }}" alt="Current profile photo" />
+                                    src="{{ asset("storage/" . $walikelas->user->avatar) }}"
+                                    alt="Current profile photo" />
                             </div>
                             <label class="block">
                                 <label>Profile Picture Wali Kelas</label>

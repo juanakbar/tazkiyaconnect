@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Administrator\KelasController;
+use App\Http\Controllers\Administrator\TaskController;
 use App\Http\Controllers\Administrator\WaliKelasController;
 use App\Http\Controllers\Administrator\WaliMuridController;
 
@@ -20,11 +21,10 @@ Route::prefix('administrator')->middleware(['auth', 'role:SuperAdmin'])->group(f
     Route::resource('kelas', KelasController::class);
     Route::get('assign_wali_kelas/{slug}', [KelasController::class, 'assignWaliKelas'])->name('assign_wali_kelas');
     Route::post('assign_wali_kelas/{slug}', [KelasController::class, 'assignWaliKelasPost'])->name('assign_wali_kelas');
+    Route::resource('khs', TaskController::class);
 });
-Route::prefix('walimurid')->middleware(['auth', 'role:WaliMurid'])->group(function () {
-    Route::get('/dasboard', function () {
-        return 'JUJUN SIGA KONTOL';
-    })->name('dashboard_wali_murid');
+Route::prefix('walimurid')->middleware(['auth', 'role:WaliKelas|SuperAdmin'])->group(function () {
+    // 
 });
 
 Route::middleware('auth')->group(function () {

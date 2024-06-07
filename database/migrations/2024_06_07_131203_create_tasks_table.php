@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('wali_kelas', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->constrained();
-            $table->string('slug');
-            $table->string('nip');
-            $table->enum('jenis_kelamin', ['L', 'P']);
-            $table->string('tingkat_pendidikan');
-            $table->string('alamat');
+            $table->foreignUuid('kelas_id')->constrained();
+            $table->string('name');
+            $table->double('nilai');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('wali_kelas');
+        Schema::dropIfExists('tasks');
     }
 };

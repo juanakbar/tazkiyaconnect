@@ -11,7 +11,7 @@ class KelasController extends Controller
 {
     public function index()
     {
-        $kelas = Kelas::get();
+        $kelas = Kelas::query()->with('tasks', 'waliKelas')->get();
         return view('administrator.kelas.index', [
             'kelas' => $kelas
         ]);

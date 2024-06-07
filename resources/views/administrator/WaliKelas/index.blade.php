@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="panel">
-        <h5 class="text-lg font-semibold dark:text-white-light">Wali Murid</h5>
+        <h5 class="text-lg font-semibold dark:text-white-light">Wali Kelas</h5>
         <div class="md:absolute  ltr:md:left-5 rtl:md:right-5">
             <div class="mb-5 flex flex-wrap items-center">
                 <a href="{{ route("walikelas.create") }}" type="button" class="btn btn-primary btn-sm m-1">
@@ -36,7 +36,7 @@
                         <tr>
                             <td>
                                 <div class="flex items-center gap-2">
-                                    <img src="{{ asset("storage/" . $item->avatar) }}"
+                                    <img src="{{ asset("storage/" . $item->user->avatar) }}"
                                         class="w-9 h-9 rounded-full max-w-none" alt="user-profile" />
                                     <div class="font-semibold">{{ $item->user->name }}</div>
                                 </div>
