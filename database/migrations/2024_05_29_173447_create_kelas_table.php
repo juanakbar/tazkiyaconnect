@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('slug');
             $table->integer('grade');
             $table->integer('level');
+            $table->foreignUuid('created_by')->references('id')->on('users');
             $table->timestamps();
         });
     }

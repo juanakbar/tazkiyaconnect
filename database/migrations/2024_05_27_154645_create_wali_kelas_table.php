@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->string('tingkat_pendidikan');
             $table->string('alamat');
+            $table->foreignUuid('created_by')->references('id')->on('users');
             $table->timestamps();
         });
     }

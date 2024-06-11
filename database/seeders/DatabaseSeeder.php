@@ -23,20 +23,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => bcrypt('password'),
         ]);
-        $WalMur = User::create([
-            'name' => 'Wali Murid 1',
-            'email' => 'walmur@example.com',
-            'password' => bcrypt('password'),
-        ]);
-        $WaliKelas = User::create([
-            'name' => 'Wali Kelas 1',
-            'email' => 'walikelas1@example.com',
-            'password' => bcrypt('password'),
-        ]);
+
 
         $Admin->assignRole('SuperAdmin');
-        $WalMur->assignRole('WaliMurid');
-        $WaliKelas->assignRole('WaliKelas');
         // $this->call([
         //     WaliMuridSeeder::class
         // ]);

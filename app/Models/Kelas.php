@@ -32,4 +32,9 @@ class Kelas extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function siswas(): HasMany
+    {
+        return $this->hasMany(Siswa::class);
+    }
 }

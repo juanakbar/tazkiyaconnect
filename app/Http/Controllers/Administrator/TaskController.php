@@ -38,11 +38,12 @@ class TaskController extends Controller
         Task::create([
             'name' => $request->name,
             'kelas_id' => $request->kelas_id,
-            'nilai' => $request->nilai
+            'nilai' => $request->nilai,
+            'created_by' => auth()->user()->id
         ]);
 
         flash()->addSuccess('Data Kegiatan Tersimpan');
-        return redirect()->route('khs.index');
+        return redirect()->back();
     }
     public function update(Request $request, string $id)
     {
@@ -55,7 +56,8 @@ class TaskController extends Controller
         $task->update([
             'name' => $request->name,
             'kelas_id' => $request->kelas_id,
-            'nilai' => $request->nilai
+            'nilai' => $request->nilai,
+            'created_by' => auth()->user()->id
         ]);
 
         flash()->addSuccess('Data Kegiatan Berhasil Diubah');

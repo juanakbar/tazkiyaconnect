@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('pekerjaan');
             $table->string('kewarganeraan');
             $table->text('alamat');
+            $table->foreignUuid('created_by')->references('id')->on('users');
             $table->timestamps();
         });
     }

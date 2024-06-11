@@ -60,6 +60,7 @@ class WaliKelasController extends Controller
             'jenis_kelamin' => $validateData['jenis_kelamin'],
             'tingkat_pendidikan' => $validateData['tingkat_pendidikan'],
             'alamat' => $validateData['alamat'],
+            'created_by' => auth()->user()->id
 
         ]);
         $user->assignRole('WaliKelas');
@@ -105,6 +106,7 @@ class WaliKelasController extends Controller
             'jenis_kelamin' => $request->jenis_kelamin,
             'tingkat_pendidikan' => $request->tingkat_pendidikan,
             'alamat' => $request->alamat,
+            'created_by' => auth()->user()->id
         ]);
         if ($request->has('avatar')) {
             Storage::delete($user->avatar);

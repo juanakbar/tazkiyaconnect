@@ -75,6 +75,7 @@ class WaliMuridController extends Controller
             'pekerjaan' => $validateData['pekerjaan'],
             'kewarganeraan' => $validateData['kewarganeraan'],
             'alamat' => $validateData['alamat'],
+            'created_by' => auth()->user()->id
         ]);
         $user->assignRole('WaliMurid');
 
@@ -125,6 +126,7 @@ class WaliMuridController extends Controller
             'pekerjaan' => $request->pekerjaan,
             'kewarganeraan' => $request->kewarganeraan,
             'alamat' => $request->alamat,
+            'created_by' => auth()->user()->id
             // 'avatar' => $request->file('avatar')->storeAs('avatar', $user->id . '_' . $request->file('avatar')->getClientOriginalName(), 'public')
         ]);
         if ($request->has('avatar')) {
@@ -159,5 +161,21 @@ class WaliMuridController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'There was an error deleting the item'], 500);
         }
+    }
+
+    public function siswa(string $slug)
+    {
+        $waliMurid = WaliMurid::query()->with('siswas')->where('slug', $slug)->firstOrFail();
+        return view('administrator.WaliMurid.waliMuridSiswa', [
+            'waliMurid' => $waliMurid
+        ]);
+    }
+
+    public function addSiswa(string $slug)
+    {
+        $waliMurid = WaliMurid::query()->with('siswas')->where('slug', $slug)->firstOrFail();
+        return view('administrator.WaliMurid.addSiswa', [
+            'waliMurid' => $waliMurid
+        ]);
     }
 }

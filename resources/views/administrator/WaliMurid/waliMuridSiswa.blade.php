@@ -1,9 +1,10 @@
 <x-app-layout>
     <div class="panel">
-        <h5 class="text-lg font-semibold dark:text-white-light">Wali Murid</h5>
+        <h5 class="text-lg font-semibold dark:text-white-light">Siswa Dari {{ $waliMurid->user->name }}</h5>
         <div class="md:absolute  ltr:md:left-5 rtl:md:right-5">
             <div class="mb-5 flex flex-wrap items-center">
-                <a href="{{ route("walimurid.create") }}" type="button" class="btn btn-primary btn-sm m-1">
+                <a href="{{ route("siswa.addSiswa", $waliMurid->slug) }}" type="button"
+                    class="btn btn-primary btn-sm m-1">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ltr:mr-2 rtl:ml-2">
                         <path
@@ -15,7 +16,6 @@
                     </svg>
                     Tambah
                 </a>
-                {{-- @include("administrator.WaliMurid.create") --}}
                 <button type="button" class="btn btn-primary btn-sm m-1" @click="exportTable('txt')">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ltr:mr-2 rtl:ml-2">
@@ -45,36 +45,27 @@
                         <th>Tempat Lahir</th>
                         <th>Tanggal Lahir</th>
                         <th>Pekerjaan</th>
-                        <th>Siswa</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($walimurids as $walimurid)
+                    @foreach ($waliMurid->siswas as $siswa)
                         <tr>
                             <td>
                                 <div class="flex items-center gap-2">
-                                    <img src="{{ asset("storage/" . $walimurid->user->avatar) }}"
+                                    <img src="{{ asset("storage/" . $siswa->avatar) }}"
                                         class="w-9 h-9 rounded-full max-w-none" alt="user-profile" />
-                                    <div class="font-semibold">{{ $walimurid->user->name }}</div>
+                                    <div class="font-semibold">{{ $siswa->name }}</div>
                                 </div>
                             </td>
-                            <td>{{ $walimurid->user->email }}</td>
-                            <td>{{ $walimurid->agama }}</td>
-                            <td>{{ $walimurid->tempat_lahir }}</td>
-                            <td>{{ $walimurid->tanggal_lahir }}</td>
-                            <td>{{ $walimurid->pekerjaan }}</td>
-                            <td>
-                                @if ($walimurid->siswas->count() > 0)
-                                    <a href="/" class="text-primary block hover:underline">Lihat Siswa</a>
-                                @else
-                                    <a href="{{ route("siswa.WaliMurid", $walimurid->slug) }}"
-                                        class="text-primary block hover:underline">Tambah Siswa</a>
-                                @endif
-                            </td>
+                            {{-- <td>{{ $siswa->user->email }}</td>
+                            <td>{{ $siswa->agama }}</td>
+                            <td>{{ $siswa->tempat_lahir }}</td>
+                            <td>{{ $siswa->tanggal_lahir }}</td>
+                            <td>{{ $siswa->pekerjaan }}</td>
                             <td class="border-b border-[#ebedf2] p-3 text-center dark:border-[#191e3a]">
                                 <button type="button" x-tooltip="Edit">
-                                    <a href="{{ route("walimurid.show", $walimurid->slug) }}">
+                                    <a href="{{ route("siswa.show", $siswa->slug) }}">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 ltr:mr-2 rtl:ml-2">
                                             <path
@@ -86,7 +77,7 @@
                                         </svg>
                                     </a>
                                 </button>
-                                <button type="button" x-tooltip="Delete" @click="showAlert('{{ $walimurid->slug }}')">
+                                <button type="button" x-tooltip="Delete" @click="showAlert('{{ $siswa->slug }}')">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg" class="h-5 w-5">
                                         <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5"
@@ -103,12 +94,12 @@
                                             stroke="currentColor" stroke-width="1.5" />
                                     </svg>
                                 </button>
-                            </td>
+                            </td> --}}
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            {{-- @json($walimurids) --}}
+            {{-- @json($waliMurid) --}}
         </div>
     </div>
     @push("CSS")
@@ -134,7 +125,7 @@
                 }).then(async (result) => {
                     if (result.value) {
                         try {
-                            const response = await fetch(`{{ route("walimurid.destroy", ":slug") }}`.replace(
+                            const response = await fetch(`{{ route("siswa.destroy", ":slug") }}`.replace(
                                 ':slug', slug), {
                                 method: 'DELETE',
                                 headers: {

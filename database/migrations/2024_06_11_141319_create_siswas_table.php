@@ -11,12 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('siswas', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('wali_murid_id')->references('id')->on('users');
             $table->foreignUuid('kelas_id')->constrained();
             $table->string('name');
-            $table->double('nilai');
-            $table->foreignUuid('created_by')->references('id')->on('users');
+            $table->string('nisn');
+            $table->string('nis');
+            $table->enum('jenis_kelamin', ['P', 'L']);
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->string('avatar');
             $table->timestamps();
         });
     }
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('siswas');
     }
 };

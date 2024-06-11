@@ -6,6 +6,7 @@ use App\Models\Kelas;
 use App\Models\WaliKelas;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Task;
 
 class KelasController extends Controller
 {
@@ -28,7 +29,11 @@ class KelasController extends Controller
             'level' => ['required', 'numeric'],
         ]);
         // dd($validateData);
-        Kelas::create($validateData);
+        Kelas::create([
+            'grade' => $request->grade,
+            'level' => $request->level,
+            'created_by' => auth()->user()->id
+        ]);
         flash()->addSuccess('Data Kelas Berhasil Ditambahkan');
         return redirect()->route('kelas.index');
     }
@@ -50,7 +55,11 @@ class KelasController extends Controller
             'grade' => ['required', 'numeric'],
             'level' => ['required', 'numeric'],
         ]);
-        $kelas->update($validateData);
+        $kelas->update([
+            'grade' => $request->grade,
+            'level' => $request->level,
+            'created_by' => auth()->user()->id
+        ]);
         flash()->addSuccess('Data Kelas Berhasil Diubah');
         return redirect()->route('kelas.index');
     }
@@ -88,5 +97,14 @@ class KelasController extends Controller
         ]);
         flash()->addSuccess('Wali Kelas Berhasil Ditambahkan');
         return redirect()->route('kelas.index');
+    }
+
+    public function show(string $slug)
+    {
+        $kelas = Kelas::query()->with('tasks')->where('slug', $slug)->firstOrFail();
+        // $khs = Task::query()->with('kelas')->where('kelas_id', $kelas->id)->get();
+        return view('administrator.kelas.kelasKHS', [
+            'kelas' => $kelas
+        ]);
     }
 }
