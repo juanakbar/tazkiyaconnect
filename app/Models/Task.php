@@ -17,4 +17,10 @@ class Task extends Model
     {
         return $this->belongsTo(Kelas::class);
     }
+    public function siswas()
+    {
+        return $this->belongsToMany(Siswa::class, 'penilaians', 'task_id', 'siswa_id')
+            ->using(Penilaian::class)
+            ->withTimestamps();
+    }
 }

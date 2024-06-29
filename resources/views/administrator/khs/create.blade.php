@@ -17,7 +17,7 @@
                  <form action="{{ route("khs.store") }}" method="POST">
                      @csrf
                      <div class=" mb-3">
-                         <label for="kelas_id">Nama Kegiatan</label>
+                         <label for="kelas_id">Pilih Kelas</label>
                          <select name="kelas_id" id="kelas_id" class="form-select">
                              @foreach ($class as $item)
                                  <option value="{{ $item->id }}">Kelas

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Administrator;
 
 use App\Models\City;
 use App\Models\User;
+use App\Models\Siswa;
 use Ramsey\Uuid\Uuid;
 use App\Models\Village;
 use App\Models\District;
@@ -23,7 +24,7 @@ class WaliMuridController extends Controller
      */
     public function index()
     {
-        $walimurids = WaliMurid::with('user')->get();
+        $walimurids = WaliMurid::with(['user', 'siswas'])->get();
 
         return view('administrator.WaliMurid.index', [
             'walimurids' => WaliMuridResource::collection($walimurids)
@@ -90,9 +91,10 @@ class WaliMuridController extends Controller
      */
     public function show(string $slug)
     {
-        $walimurid = WaliMurid::query()->with('user')->where('slug', $slug)->first();
-        // dd($walimurid->tanggal_lahir);
-        return view('administrator.WaliMurid.show', compact('walimurid'));
+        $walimurid = WaliMurid::query()->with(['user'])->where('slug', $slug)->first();
+        $siswas = Siswa::query()->where('wali_murid_id', $walimurid->user->id)->get();
+        // dd($siswas);
+        return view('administrator.WaliMurid.show', compact('walimurid', 'siswas'));
     }
 
     /**
@@ -161,21 +163,5 @@ class WaliMuridController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'There was an error deleting the item'], 500);
         }
-    }
-
-    public function siswa(string $slug)
-    {
-        $waliMurid = WaliMurid::query()->with('siswas')->where('slug', $slug)->firstOrFail();
-        return view('administrator.WaliMurid.waliMuridSiswa', [
-            'waliMurid' => $waliMurid
-        ]);
-    }
-
-    public function addSiswa(string $slug)
-    {
-        $waliMurid = WaliMurid::query()->with('siswas')->where('slug', $slug)->firstOrFail();
-        return view('administrator.WaliMurid.addSiswa', [
-            'waliMurid' => $waliMurid
-        ]);
     }
 }

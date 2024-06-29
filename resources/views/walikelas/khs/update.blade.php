@@ -14,7 +14,7 @@
                  </button>
              </div>
              <div class="p-5">
-                 <form action="{{ route("khs.update", $item->id) }}" method="POST">
+                 <form action="{{ route("task.update", $item->id) }}" method="POST">
                      @method("PUT")
                      @csrf
                      <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">

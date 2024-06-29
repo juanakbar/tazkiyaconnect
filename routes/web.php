@@ -7,7 +7,10 @@ use App\Http\Controllers\Administrator\SiswaController;
 use App\Http\Controllers\Administrator\TaskController;
 use App\Http\Controllers\Administrator\WaliKelasController;
 use App\Http\Controllers\Administrator\WaliMuridController;
-
+use App\Http\Controllers\WaliKelas\KelasController as WaliKelasKelasController;
+use App\Http\Controllers\WaliKelas\KHSController;
+use App\Http\Controllers\WaliKelas\SiswaController as WaliKelasSiswaController;
+use App\Http\Controllers\WaliMurid\SiswaController as WaliMuridSiswaController;
 
 Route::get('/', function () {
     return redirect('login');
@@ -24,14 +27,17 @@ Route::prefix('administrator')->middleware(['auth', 'role:SuperAdmin'])->group(f
     Route::resource('walikelas', WaliKelasController::class);
     Route::resource('kelas', KelasController::class);
     Route::get('kelas/{slug}/khs', [KelasController::class, 'show'])->name('kelas_khs');
+    Route::get('kelas/{slug}/siswa', [KelasController::class, 'siswa'])->name('siswa_kelas');
     Route::get('assign_wali_kelas/{slug}', [KelasController::class, 'assignWaliKelas'])->name('assign_wali_kelas');
     Route::post('assign_wali_kelas/{slug}', [KelasController::class, 'assignWaliKelasPost'])->name('assign_wali_kelas');
     Route::resource('khs', TaskController::class);
     Route::resource('siswa', SiswaController::class);
     // Route::get('siswa?/siswa', [SiswaController::class, 'index'])->name('siswa.create');
 });
-Route::prefix('walimurid')->middleware(['auth', 'role:WaliKelas|SuperAdmin'])->group(function () {
-    // 
+Route::prefix('walikelas')->middleware(['auth', 'role:WaliKelas'])->group(function () {
+    Route::resource('/kelas-anda', WaliKelasKelasController::class);
+    Route::resource('/task', KHSController::class);
+    Route::resource('/murid-anda', WaliKelasSiswaController::class);
 });
 
 Route::middleware('auth')->group(function () {

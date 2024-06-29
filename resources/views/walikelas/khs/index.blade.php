@@ -1,11 +1,11 @@
 <x-app-layout>
     <div>
-        {{-- @include("administrator.kelas.create") --}}
         <div class="panel">
-            <h5 class="text-lg font-semibold dark:text-white-light">Kelas</h5>
+            <h5 class="text-lg font-semibold dark:text-white-light">Kegiatan Harian Kelas {{ $kelas->grade }} Level
+                {{ $kelas->level }}</h5>
             <div class="md:absolute  ltr:md:left-5 rtl:md:right-5">
-                <div class="mb-5 flex flex-wrap items-center">
-                    <a href="{{ route("kelas.create") }}" type="button" class="btn btn-primary btn-sm m-1">
+                <div class="mb-5 flex flex-wrap items-center" x-data="modal">
+                    <button @click="toggle" type="button" class="btn btn-primary btn-sm m-1">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ltr:mr-2 rtl:ml-2">
                             <path
@@ -15,9 +15,9 @@
                                 d="M13 2.5V5C13 7.35702 13 8.53553 13.7322 9.26777C14.4645 10 15.643 10 18 10H22"
                                 stroke="currentColor" stroke-width="1.5" />
                         </svg>
-                        Tambah
-                    </a>
-
+                        Tambah KHS
+                    </button>
+                    @include("walikelas.khs.create")
                 </div>
             </div>
             <div x-data='striped'>
@@ -25,62 +25,20 @@
                 <table id="kelasTable" class="table-striped table-hover table-bordered table-compact">
                     <thead>
                         <tr>
-                            <th>Kelas</th>
-                            <th>Level</th>
-                            <th>Wali Kelas</th>
-                            <th>KHS</th>
-                            <th>Siswa</th>
+                            <th>Kegiatan</th>
+                            <th>Nilai</th>
                             <th class="text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($kelas as $item)
+                        @foreach ($kelas->tasks as $item)
                             <tr>
-                                <td>{{ $item->grade }}</td>
-                                <td>{{ $item->level }}</td>
-                                <td class="hover:underline hover:text-primary">
-                                    @if ($item->waliKelas)
-                                        <a href="{{ route("assign_wali_kelas", $item->slug) }}"
-                                            class="flex items-center gap-2" x-tooltip="Klik Untuk Ubah Wali Kelas">
-                                            <img src="{{ asset("storage/" . $item->waliKelas->user->avatar) }}"
-                                                class="w-9 h-9 rounded-full max-w-none" alt="user-profile" />
-                                            <div class="font-reguler  block ">
-                                                {{ $item->waliKelas->user->name }}</div>
-                                        </a>
-                                    @else
-                                        <a href="{{ route("assign_wali_kelas", $item->slug) }}"
-                                            class="text-primary block hover:underline">Pilih Wali
-                                            Kelas</a>
-                                    @endif
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->nilai }}</td>
 
-                                </td>
-                                <td class="hover:underline hover:text-primary">
-                                    @if ($item->tasks->count() > 0)
-                                        <a href="{{ route("kelas_khs", $item->slug) }}" class="flex items-center gap-2"
-                                            x-tooltip="Klik Untuk Melihat KHS Kelas">
-                                            Lihat KHS
-                                        </a>
-                                    @else
-                                        <a href="{{ route("kelas_khs", $item->slug) }}"
-                                            class="text-primary block hover:underline">Buat KHS</a>
-                                    @endif
-
-                                </td>
-                                <td>
-                                    @if ($item->siswas->count() > 0)
-                                        <a href="{{ route("siswa_kelas", $item->slug) }}"
-                                            class="hover:underline hover:text-primary flex items-center gap-2"
-                                            x-tooltip="Klik Untuk Melihat Siswa">
-                                            Lihat Siswa
-                                        </a>
-                                    @else
-                                        Belum Ada Siswa
-                                    @endif
-
-                                </td>
-                                <td class="border-b border-[#ebedf2] p-3 text-end">
-                                    <button type="button" x-tooltip="Detail">
-                                        <a href="{{ route("kelas.edit", $item->slug) }}" x-tooltip="Detail">
+                                <td class="border-b border-[#ebedf2] p-3  flex items-end justify-end">
+                                    <div x-data="update">
+                                        <button @click="toggle" x-tooltip="Detail">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 class="h-4.5 w-4.5 ltr:mr-2 rtl:ml-2">
@@ -91,11 +49,11 @@
                                                     d="M14.36 4.07812C14.36 4.07812 14.4759 6.04774 16.2138 7.78564C17.9517 9.52354 19.9213 9.6394 19.9213 9.6394M4.19789 21.6777L2.32178 19.8015"
                                                     stroke="currentColor" stroke-width="1.5" />
                                             </svg>
-                                        </a>
-                                    </button>
+                                        </button>
+                                        @include("walikelas.khs.update")
+                                    </div>
 
-                                    <button type="button" x-tooltip="Delete"
-                                        @click="showAlert('{{ $item->slug }}')">
+                                    <button type="button" x-tooltip="Delete" @click="showAlert('{{ $item->slug }}')">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg" class="h-5 w-5">
                                             <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5"
@@ -123,12 +81,19 @@
     </div>
     @push("JS")
         <script src="{{ asset("assets/js/simple-datatables.js") }}"></script>
-
+        <script></script>
         <script>
             let datatable5;
             document.addEventListener('alpine:init', () => {
 
+                Alpine.data("update", (initialOpenState = false) => ({
+                    open: initialOpenState,
 
+                    toggle() {
+                        this.open = !this.open;
+                    },
+
+                }));
                 Alpine.data('striped', () => ({
                     init() {
                         const tableOptions = {
@@ -154,6 +119,8 @@
                         datatable5 = new simpleDatatables.DataTable('#kelasTable', tableOptions);
                     },
                 }));
+
+
             });
             async function showAlert(slug) {
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -167,7 +134,7 @@
                 }).then(async (result) => {
                     if (result.value) {
                         try {
-                            const response = await fetch(`{{ route("kelas.destroy", ":slug") }}`
+                            const response = await fetch(`{{ route("khs.destroy", ":slug") }}`
                                 .replace(
                                     ':slug', slug), {
                                     method: 'DELETE',

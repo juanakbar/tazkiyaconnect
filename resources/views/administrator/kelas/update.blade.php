@@ -1,9 +1,8 @@
 <x-app-layout>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="panel ">
+        <div class="panel">
             <div class="flex items-center justify-between p-5 text-lg font-semibold dark:text-white">
                 Tambah Kelas
-
             </div>
             <div class="p-5">
                 <form action="{{ route("kelas.update", $item->slug) }}" method="POST">
@@ -32,28 +31,6 @@
             </div>
 
         </div>
-        {{-- @if ($item->waliKelas)
-            <div class="panel">
-                <div class="flex items-center justify-between p-5 text-lg font-semibold dark:text-white">
-                    Pilih Wali Kelas Untuk Kelas {{ $item->grade }} Level {{ $item->level }}
-
-                </div>
-                <div class="p-5">
-                    <form action="{{ route("assign_wali_kelas", $item->slug) }}" method="POST">
-                        @csrf
-                        <select name="wali_kelas_id" id="wali_kelas_id" class="selectize mb-3">
-                            @foreach ($waliKelas as $wali)
-                                <option value="{{ $wali->id }}"
-                                    {{ $wali->id === $item->wali_kelas_id ? "selected" : "" }}>
-                                    {{ $wali->user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <button type="submit" class="btn btn-primary w-full">Login</button>
-                    </form>
-                </div>
-            </div>
-        @endif --}}
     </div>
     @push("CSS")
         <link rel='stylesheet' type='text/css' href='{{ Vite::asset("resources/css/nice-select2.css") }}'>

@@ -15,7 +15,7 @@
                                  value="{{ $item->id }}">{{ $item->user->name }}</option>
                          @endforeach
                      </select>
-                     <button type="submit" class="btn btn-primary w-full">Login</button>
+                     <button type="submit" class="btn btn-primary w-full">Simpan</button>
                  </form>
              </div>
          </div>

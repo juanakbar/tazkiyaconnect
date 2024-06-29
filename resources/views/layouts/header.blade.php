@@ -172,7 +172,7 @@
                         <span><img class="h-9 w-9 rounded-full object-cover saturate-50 group-hover:saturate-100"
                                 @if (str_contains("https:", auth()->user()->avatar)) src="{{ asset("storage/" . auth()->user()->avatar) }}"
                                     @else
-                                        src="{{ auth()->user()->avatar }}" @endif
+                                        src="{{ asset("storage/" . auth()->user()->avatar) }}" @endif
                                 alt="image" /></span>
                     </a>
                     <ul x-cloak x-show="open" x-transition x-transition.duration.300ms
@@ -183,7 +183,7 @@
                                     <img class="h-10 w-10 rounded-md object-cover"
                                         @if (str_contains("https:", auth()->user()->avatar)) src="{{ asset("storage/" . auth()->user()->avatar) }}"
                                     @else
-                                        src="{{ auth()->user()->avatar }}" @endif
+                                         src="{{ asset("storage/" . auth()->user()->avatar) }}" @endif
                                         alt="image" />
                                 </div>
                                 <div class="truncate ltr:pl-4 rtl:pr-4">

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Administrator;
 
+use App\Models\Task;
 use App\Models\Kelas;
+use App\Models\Siswa;
 use App\Models\WaliKelas;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Task;
 
 class KelasController extends Controller
 {
@@ -104,6 +105,17 @@ class KelasController extends Controller
         $kelas = Kelas::query()->with('tasks')->where('slug', $slug)->firstOrFail();
         // $khs = Task::query()->with('kelas')->where('kelas_id', $kelas->id)->get();
         return view('administrator.kelas.kelasKHS', [
+            'kelas' => $kelas
+        ]);
+    }
+
+    public function siswa(string $slug)
+    {
+        $kelas = Kelas::query()->where('slug', $slug)->firstOrFail();
+        $siswas = Siswa::query()->where('kelas_id', $kelas->id)->get();
+
+        return view('administrator.kelas.kelasSiswa', [
+            'siswas' => $siswas,
             'kelas' => $kelas
         ]);
     }

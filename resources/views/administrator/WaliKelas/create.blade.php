@@ -10,7 +10,7 @@
             <div class="panel h-full xl:col-span-2">
 
                 <div class="mb-5 flex items-center">
-                    <h5 class="text-lg font-semibold dark:text-white-light">Info Detail Wali Murid</h5>
+                    <h5 class="text-lg font-semibold dark:text-white-light">Tambah Wali Kelas</h5>
 
                 </div>
 

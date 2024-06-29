@@ -33,6 +33,6 @@ class WaliMurid extends Model
 
     public function siswas(): HasMany
     {
-        return $this->hasMany(Siswa::class);
+        return $this->hasMany(Siswa::class, 'wali_murid_id');
     }
 }

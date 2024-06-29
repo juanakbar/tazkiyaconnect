@@ -21,4 +21,11 @@ class Siswa extends Model
     {
         return $this->belongsTo(Kelas::class);
     }
+
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class, 'penilaians', 'siswa_id', 'task_id')
+            ->using(Penilaian::class)
+            ->withTimestamps();
+    }
 }
