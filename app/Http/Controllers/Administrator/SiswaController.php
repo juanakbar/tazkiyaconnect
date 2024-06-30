@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Administrator;
 
+use Carbon\Carbon;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use Ramsey\Uuid\Uuid;
+use App\Models\Penilaian;
 use App\Models\WaliMurid;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,10 +14,6 @@ use Illuminate\Support\Facades\Storage;
 
 class SiswaController extends Controller
 {
-    // public function index()
-    // {
-    //     return view('')
-    // }
     public function index()
     {
         $siswas = Siswa::query()->with(['waliMurid'])->get();
@@ -111,5 +109,22 @@ class SiswaController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'There was an error deleting the item'], 500);
         }
+    }
+
+    public function show($siswa, Request $request)
+    {
+        $siswa = Siswa::query()->with('waliMurid')->where('id', $siswa)->firstOrFail();
+        $created_at = $request->input('created_at', Carbon::today()->toDateString());
+
+        // Query dengan tanggal yang didapat
+        $penilaians = Penilaian::query()
+            ->with('siswa', 'task')
+            ->where('siswa_id', $siswa->id)
+            ->whereDate('created_at', $created_at)
+            ->get();
+        return view('administrator.siswa.khssiwa', [
+            'siswa' => $siswa,
+            'penilaians' => $penilaians
+        ]);
     }
 }

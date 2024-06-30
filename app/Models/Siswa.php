@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Siswa extends Model
 {
@@ -27,5 +28,10 @@ class Siswa extends Model
         return $this->belongsToMany(Task::class, 'penilaians', 'siswa_id', 'task_id')
             ->using(Penilaian::class)
             ->withTimestamps();
+    }
+
+    public function prestasis(): HasMany
+    {
+        return $this->hasMany(Prestasi::class);
     }
 }

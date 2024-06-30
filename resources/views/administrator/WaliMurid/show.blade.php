@@ -143,12 +143,13 @@
                             <div class="flex items-center p-4"><img src="{{ asset("storage/" . $siswa->avatar) }}"
                                     alt="" class="h-10 w-10 flex-none rounded-full">
                                 <div class="ml-4 flex-auto">
-                                    <div class="font-medium">{{ $siswa->name }}r</div>
-                                    <div class="mt-1 text-slate-700">Kelas : {{ $siswa->kelas->grade }} - Level :
+                                    <div class="font-medium dark:text-white">{{ $siswa->name }}r</div>
+                                    <div class="mt-1 text-slate-700 dark:text-slate-500">Kelas :
+                                        {{ $siswa->kelas->grade }} - Level :
                                         {{ $siswa->kelas->level }}</div>
                                 </div>
                                 <div
-                                    class="pointer-events-auto ml-4 flex-none rounded-md px-2 py-[0.3125rem] font-medium text-slate-700 shadow-sm ring-1 ring-slate-700/10 hover:bg-slate-50">
+                                    class="pointer-events-auto ml-4 flex-none rounded-md px-2 py-[0.3125rem] dark:text-slate-500 font-medium text-slate-700 shadow-sm ring-1 ring-slate-700/10 dark:ring-slate-500/10 hover:bg-slate-50">
                                     Lihat</div>
                             </div>
 

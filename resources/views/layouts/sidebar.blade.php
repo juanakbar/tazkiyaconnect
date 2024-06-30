@@ -103,6 +103,9 @@
                             <li>
                                 <a href="/administrator/siswa">Siswa</a>
                             </li>
+                            <li>
+                                <a href="/administrator/prestasi">Prestasi Siswa</a>
+                            </li>
 
                         </ul>
                     </li>

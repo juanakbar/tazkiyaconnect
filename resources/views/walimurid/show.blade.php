@@ -89,16 +89,40 @@
                     </table>
                 </div>
             </div>
-            <div class="flex items-end justify-end">
-                @if ($penilaians->isEmpty())
-                    <a href="{{ route("penilaian_siswa", array_merge(["siswa" => $siswa->id], ["created_at" => Carbon\Carbon::parse(request()->created_at ?? Carbon\Carbon::today())->toDateString()])) }}"
-                        class="btn btn-primary">Berikan Penilaian Untuk Tanggal
-                        {{ Carbon\Carbon::parse(request()->created_at)->format("d-m-Y") }}</a>
-                @else
-                    <a href="{{ route("update-penilaian_siswa", array_merge(["siswa" => $siswa->id], ["created_at" => Carbon\Carbon::parse(request()->created_at ?? Carbon\Carbon::today())->toDateString()])) }}"
-                        class="btn btn-primary">Update Penilaian Untuk Tanggal
-                        {{ Carbon\Carbon::parse(request()->created_at)->format("d-m-Y") }}</a>
-                @endif
+
+        </div>
+    </div>
+    <div class="panel lg:col-span-2 xl:col-span-3">
+        <div class="mb-5 flex justify-between gap-3 items-center">
+            <h5 class="text-lg font-semibold dark:text-white-light whitespace-nowrap">Prestasi Anak Anda</h5>
+
+        </div>
+        <div class="mt-5">
+            <div class="table-responsive font-semibold text-[#515365] dark:text-white-light">
+                <table class="whitespace-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Nama Prestasi</th>
+                            <th>Deskripsi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="dark:text-white-dark">
+                        @forelse ($siswa->prestasis as $item)
+                            <tr>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->description }}</td>
+
+                                <td>
+                                    {{ Carbon\Carbon::parse($item->created_at)->format("d-m-Y") }}
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td>Belum Ada Prestasi</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
 

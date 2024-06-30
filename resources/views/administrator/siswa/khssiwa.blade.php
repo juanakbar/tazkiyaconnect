@@ -89,17 +89,7 @@
                     </table>
                 </div>
             </div>
-            <div class="flex items-end justify-end">
-                @if ($penilaians->isEmpty())
-                    <a href="{{ route("penilaian_siswa", array_merge(["siswa" => $siswa->id], ["created_at" => Carbon\Carbon::parse(request()->created_at ?? Carbon\Carbon::today())->toDateString()])) }}"
-                        class="btn btn-primary">Berikan Penilaian Untuk Tanggal
-                        {{ Carbon\Carbon::parse(request()->created_at)->format("d-m-Y") }}</a>
-                @else
-                    <a href="{{ route("update-penilaian_siswa", array_merge(["siswa" => $siswa->id], ["created_at" => Carbon\Carbon::parse(request()->created_at ?? Carbon\Carbon::today())->toDateString()])) }}"
-                        class="btn btn-primary">Update Penilaian Untuk Tanggal
-                        {{ Carbon\Carbon::parse(request()->created_at)->format("d-m-Y") }}</a>
-                @endif
-            </div>
+
         </div>
 
     </div>

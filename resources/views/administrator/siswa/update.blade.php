@@ -113,20 +113,7 @@
                 </div>
             </form>
         </div>
-        <div class="panel h-full xl:col-span-6">
-            <div class="mb-5 flex items-center">
-                <h5 class="text-lg font-semibold dark:text-white-light">KHS Siswa {{ $siswa->name }}</h5>
-            </div>
-            <div>
-                <label for="name">Tanggal</label>
-                <input id="name" type="name" placeholder="Masukkan Nama Siswa" class="form-input" name="name"
-                    value="{{ $siswa->name }}" />
-                @error("name")
-                    <p class="text-danger mt-1">Mohon dicek Kembali</p>
-                @enderror
 
-            </div>
-        </div>
     </div>
     @push("CSS")
         <link rel="stylesheet" href="{{ Vite::asset("resources/css/flatpickr.min.css") }}">
