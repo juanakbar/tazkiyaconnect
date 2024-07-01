@@ -5,7 +5,7 @@ Menjalankan project Laravel memerlukan beberapa langkah utama yang mencakup peng
 Jika proyek Anda berada di repository Git, clone repository tersebut ke lokal Anda:
 
 ```bash
-git clone https://github.com/username/repository.git
+https://github.com/juanakbar/tazkiyaconnect.git
 cd repository
 ```
 
@@ -55,12 +55,12 @@ php artisan migrate
 Jika Anda memiliki seeder untuk mengisi database dengan data awal, jalankan perintah berikut:
 
 ```bash
-php artisan db:seed
+php artisan migrate:fresh --seed
 ```
 
 ### 6. Instal Dependencies Node.js
 
-Jika proyek Anda menggunakan frontend tools seperti Laravel Mix, Anda perlu menginstal dependensi Node.js:
+Jika proyek Anda menggunakan frontend tools seperti Laravel Vite, Anda perlu menginstal dependensi Node.js:
 
 ```bash
 npm install
@@ -68,17 +68,12 @@ npm install
 
 ### 7. Compile Assets (CSS/JS)
 
-Compile asset frontend menggunakan Laravel Mix. Untuk lingkungan pengembangan, gunakan perintah berikut:
+Compile asset frontend menggunakan Laravel Vite. Untuk lingkungan pengembangan, gunakan perintah berikut:
 
 ```bash
 npm run dev
 ```
 
-Untuk lingkungan produksi, gunakan perintah berikut untuk optimasi:
-
-```bash
-npm run prod
-```
 
 ### 8. Menjalankan Server Laravel
 
