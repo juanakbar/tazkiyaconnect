@@ -6,7 +6,7 @@ Jika proyek Anda berada di repository Git, clone repository tersebut ke lokal An
 
 ```bash
 git clone https://github.com/juanakbar/tazkiyaconnect.git
-cd repository
+cd tazkiyaconnect
 ```
 
 ### 2. Instal Composer Dependencies
