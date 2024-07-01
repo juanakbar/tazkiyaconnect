@@ -5,7 +5,7 @@ Menjalankan project Laravel memerlukan beberapa langkah utama yang mencakup peng
 Jika proyek Anda berada di repository Git, clone repository tersebut ke lokal Anda:
 
 ```bash
-[https://github.com/juanakbar/tazkiyaconnect.git](https://github.com/juanakbar/tazkiyaconnect.git)
+git clone https://github.com/juanakbar/tazkiyaconnect.git
 cd repository
 ```
 
